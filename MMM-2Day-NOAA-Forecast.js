@@ -43,6 +43,12 @@ Module.register("MMM-2Day-NOAA-Forecast", {
       // title
       var forecastRow1 = document.createElement("tr");
 
+        // Seems that it'll continue to return the last period for a
+        // little while after we're already in the new period.
+        if (Date.now() > Date.parse(this.forecast[0].startTime)) {
+            this.forecast.pop(0);
+        }
+
       if (this.forecast[0].isDay) {
         let forecastToday = document.createElement("th");
         forecastToday.className = "forecast-title";
@@ -59,7 +65,7 @@ Module.register("MMM-2Day-NOAA-Forecast", {
       } else {
         let forecastToday = document.createElement("th");
         forecastToday.className = "forecast-title";
-        forecastToday.innerHTML = "Today";
+        forecastToday.innerHTML = "Tonight";
 
         let forecastTomorrow = document.createElement("th");
         forecastTomorrow.className = "forecast-title";
@@ -97,8 +103,12 @@ Module.register("MMM-2Day-NOAA-Forecast", {
       let forecastRow3 = document.createElement("tr");
       for (let i = 0; i < 4; i++) {
         let forecastText = document.createElement("td");
-        forecastText.className = "forecast-text horizontalView bright";
-        forecastText.innerHTML = this.forecast[i].conditions;
+          forecastText.className = "forecast-text horizontalView bright";
+          if (this.forecast[i].isDay) {
+              forecastText.innerHTML = "☼" + this.forecast[i].conditions;
+          } else {
+              forecastText.innerHTML = "☾" + this.forecast[i].conditions;
+          }
 
         forecastRow3.appendChild(forecastText);
       }
@@ -137,7 +147,7 @@ Module.register("MMM-2Day-NOAA-Forecast", {
 
         let rainBr = document.createElement("br");
 
-        // Removed per https://www.weather.gov/media/notification/pdf_2023_24/scn24-55_api_v1.13.pdf 
+        // Removed per https://www.weather.gov/media/notification/pdf_2023_24/scn24-55_api_v1.13.pdf
         // Build up the details regarding humidity %
         // let humidIcon = document.createElement("i");
         // humidIcon.className = "fa fa-droplet fa-fw detail-icon";
@@ -169,20 +179,20 @@ Module.register("MMM-2Day-NOAA-Forecast", {
         forecastDetail.appendChild(rainIcon);
         forecastDetail.appendChild(rainText);
         forecastDetail.appendChild(rainBr);
-        // Removed per https://www.weather.gov/media/notification/pdf_2023_24/scn24-55_api_v1.13.pdf 
-        // forecastDetail.appendChild(humidIcon);
-        // forecastDetail.appendChild(humidText);
-        // forecastDetail.appendChild(humidBr);
-        forecastDetail.appendChild(windIcon);
-        forecastDetail.appendChild(windText);
+        // Removed per https://www.weather.gov/media/notification/pdf_2023_24/scn24-55_api_v1.13.pdf
+        //forecastDetail.appendChild(humidIcon);
+        //forecastDetail.appendChild(humidText);
+        //forecastDetail.appendChild(humidBr);
+        //forecastDetail.appendChild(windIcon);
+        //forecastDetail.appendChild(windText);
 
         forecastRow4.appendChild(forecastDetail);
       }
 
       wrapper.appendChild(forecastRow1);
       wrapper.appendChild(forecastRow2);
-      wrapper.appendChild(forecastRow3);
       wrapper.appendChild(forecastRow4);
+      wrapper.appendChild(forecastRow3);
     } else {
       // Otherwise lets just use a simple div
       wrapper = document.createElement("div");

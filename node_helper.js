@@ -76,7 +76,8 @@ module.exports = NodeHelper.create({
         date: element.startTime,
         isDay: element.isDaytime,
         icon: this.parseIcon(element.icon),
-        conditions: element.shortForecast,
+        //conditions: element.shortForecast,
+        conditions: element.detailedForecast,
         temp: element.temperature,
         pop: element.probabilityOfPrecipitation.value
           ? element.probabilityOfPrecipitation.value
