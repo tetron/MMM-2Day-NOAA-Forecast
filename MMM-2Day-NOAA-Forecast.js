@@ -102,15 +102,16 @@ Module.register("MMM-2Day-NOAA-Forecast", {
       // text
       let forecastRow3 = document.createElement("tr");
       for (let i = 0; i < 4; i++) {
-        let forecastText = document.createElement("td");
-          forecastText.className = "forecast-text horizontalView bright";
+          let forecastTextCell = document.createElement("td");
+          forecastTextCell.className = "forecast-text horizontalView bright";
+          let forecastText = document.createElement("p");
           if (this.forecast[i].isDay) {
               forecastText.innerHTML = "☼" + this.forecast[i].conditions;
           } else {
               forecastText.innerHTML = "☾" + this.forecast[i].conditions;
           }
-
-        forecastRow3.appendChild(forecastText);
+	  forecastTextCell.appendChild(forecastText);
+          forecastRow3.appendChild(forecastTextCell);
       }
 
       // details
